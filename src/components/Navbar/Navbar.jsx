@@ -1,164 +1,164 @@
 import React, { useState, useEffect } from "react";
-import { FiMenu, FiX } from "react-icons/fi";
-import { FaGithub, FaLinkedinIn } from "react-icons/fa";
+import { AnimatePresence, motion as Motion } from "framer-motion";
+import { Download, Menu, X } from "lucide-react";
+import ThemeToggle from "../ThemeToggle/ThemeToggle";
 
-const TotalNavbar = () => {
+const menuItems = [
+  { id: "about", label: "About" },
+  { id: "skills", label: "Skills" },
+  { id: "projects", label: "Projects" },
+  { id: "education", label: "Education" },
+  { id: "work", label: "Experience" },
+  { id: "contact", label: "Contact" },
+];
+
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
+  const [activeSection, setActiveSection] = useState("about");
   const [isScrolled, setIsScrolled] = useState(false);
 
-  const menuItems = [
-    { id: "about", label: "About" },
-    { id: "experience", label: "Experience" },
-    { id: "education", label: "Education" },
-    { id: "skills", label: "Skills" },
-    { id: "work", label: "Work" },
-    { id: "contact", label: "Contact" },
-  ];
-
-  // Scroll event to track navbar background and active section
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      setIsScrolled(scrollPosition > 50);
-
-      menuItems.forEach((item) => {
-        const section = document.getElementById(item.id);
-        if (section) {
-          const offsetTop = section.offsetTop - 100; // adjust for navbar height
-          const offsetBottom = offsetTop + section.offsetHeight;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
-            setActiveSection(item.id);
-          }
-        }
-      });
-    };
-
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Scroll to section when clicking menu item
-  const handleMenuItemClick = (sectionId) => {
-    setActiveSection(sectionId);
-    setIsOpen(false);
+  useEffect(() => {
+    const sections = menuItems
+      .map((item) => document.getElementById(item.id))
+      .filter(Boolean);
 
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visible?.target?.id) {
+          setActiveSection(visible.target.id);
+        }
+      },
+      { rootMargin: "-35% 0px -55% 0px", threshold: [0, 0.2, 0.5, 1] }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
+  const goTo = (id) => {
+    setIsOpen(false);
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <nav
-      className={`fixed top-0 w-full z-50 transition duration-300 px-[7vw] md:px-[7vw] lg:px-[20vw] ${
-        isScrolled
-          ? "bg-[#050414] bg-opacity-50 backdrop-blur-md shadow-md"
-          : "bg-transparent"
+    <Motion.nav
+      initial={{ y: -22, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.55, ease: "easeOut" }}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        isScrolled ? "theme-nav-scrolled shadow-[0_12px_35px_rgba(0,0,0,.08)]" : "bg-transparent"
       }`}
     >
-      <div className="text-white py-5 flex justify-between items-center">
-        {/* Name/Logo */}
-        <div className="text-xl font-bold cursor-pointer flex justify-center items-center gap-1">
-          <span className="text-blue-800">&lt;</span>
-          <span className="text-white">Mohini</span>
-          <span className="text-white">Sahoo</span>
-          <span className="text-blue-800">&gt;</span>
-        </div>
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 h-20 flex items-center justify-between">
+        <button
+          onClick={() => goTo("about")}
+          className="group flex items-center gap-2 text-left theme-heading"
+          aria-label="Go to about section"
+        >
+          <span className="mono grid h-10 w-10 place-items-center rounded-2xl border border-cyan-400/30 bg-cyan-400/10 text-cyan-400 transition group-hover:scale-105">
+            MS
+          </span>
+          <span className="hidden sm:block">
+            <span className="block text-sm font-bold leading-none">Mohini Sahoo</span>
+            <span className="mono text-[11px] text-cyan-400">Full Stack Developer</span>
+          </span>
+        </button>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center space-x-8">
-          <ul className="flex space-x-8 text-gray-300">
-            {menuItems.map((item) => (
-              <li
-                key={item.id}
-                className={`cursor-pointer hover:text-blue-800 ${
-                  activeSection === item.id ? "text-blue-800" : ""
+        <ul className="hidden lg:flex items-center gap-2 rounded-full border border-cyan-400/10 bg-white/[.03] p-1 theme-text backdrop-blur-xl">
+          {menuItems.map((item) => (
+            <li key={item.id}>
+              <button
+                onClick={() => goTo(item.id)}
+                className={`relative rounded-full px-4 py-2 text-sm font-semibold transition ${
+                  activeSection === item.id
+                    ? "text-slate-950"
+                    : "hover:text-cyan-400"
                 }`}
               >
-                <button onClick={() => handleMenuItemClick(item.id)}>
-                  {item.label}
-                </button>
-              </li>
-            ))}
-          </ul>
+                {activeSection === item.id && (
+                  <Motion.span
+                    layoutId="active-nav"
+                    className="absolute inset-0 rounded-full bg-cyan-400"
+                    transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                  />
+                )}
+                <span className="relative z-10">{item.label}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
 
-          {/* Social Icons */}
-          <div className="flex space-x-4">
-            <a
-              href="https://github.com/Mohini969"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-300 hover:text-[#8245ec]"
-            >
-              <FaGithub size={24} />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/mohini-sahoo-64924933b"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-300 hover:text-[#8245ec]"
-            >
-              <FaLinkedinIn size={24} />
-            </a>
-          </div>
+        <div className="hidden lg:flex items-center gap-4">
+          <ThemeToggle />
+
+          <a
+            href="/Mohini-Sahoo-cv.pdf"
+            download
+            className="primary-btn !px-5 !py-2.5 text-sm"
+          >
+            <Download size={17} />
+            CV
+          </a>
         </div>
 
-        {/* Mobile Menu Icon */}
-        <div className="md:hidden">
-          {isOpen ? (
-            <FiX
-              className="text-3xl text-[#8245ec] cursor-pointer"
-              onClick={() => setIsOpen(false)}
-            />
-          ) : (
-            <FiMenu
-              className="text-3xl text-[#8245ec] cursor-pointer"
-              onClick={() => setIsOpen(true)}
-            />
-          )}
-        </div>
+        <button
+          className="lg:hidden grid h-11 w-11 place-items-center rounded-2xl border border-cyan-400/30 bg-cyan-400/10 text-cyan-400 transition hover:scale-105"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? "Close menu" : "Open menu"}
+        >
+          {isOpen ? <X size={22} /> : <Menu size={22} />}
+        </button>
       </div>
 
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-[#050414] bg-opacity-100 backdrop-blur-lg z-50 rounded-b-lg shadow-md py-4">
-          <ul className="flex flex-col items-center space-y-4 text-gray-300">
-            {menuItems.map((item) => (
-              <li
-                key={item.id}
-                className={`cursor-pointer hover:text-white ${
-                  activeSection === item.id ? "text-[#8245ec]" : ""
-                }`}
-              >
-                <button onClick={() => handleMenuItemClick(item.id)}>
+      <AnimatePresence>
+        {isOpen && (
+          <Motion.div
+            initial={{ opacity: 0, y: -14 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -14 }}
+            transition={{ duration: 0.22 }}
+            className="lg:hidden theme-mobile-nav"
+          >
+            <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-5">
+              {menuItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => goTo(item.id)}
+                  className={`rounded-2xl px-4 py-3 text-left font-semibold transition ${
+                    activeSection === item.id
+                      ? "bg-cyan-400 text-slate-950"
+                      : "theme-text hover:bg-cyan-400/10 hover:text-cyan-400"
+                  }`}
+                >
                   {item.label}
                 </button>
-              </li>
-            ))}
-            <div className="flex space-x-4 pt-4">
-              <a
-                href="https://github.com/Mohini969"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white"
-              >
-                <FaGithub size={24} />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/mohini-sahoo-64924933b"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white"
-              >
-                <FaLinkedinIn size={24} />
-              </a>
+              ))}
+
+              <div className="mt-3 flex items-center justify-between gap-4 border-t border-cyan-400/10 pt-4">
+                <ThemeToggle />
+
+                <a href="/Mohini-Sahoo-cv.pdf" download className="primary-btn !px-5 !py-2.5 text-sm">
+                  <Download size={17} />
+                  Download CV
+                </a>
+              </div>
             </div>
-          </ul>
-        </div>
-      )}
-    </nav>
+          </Motion.div>
+        )}
+      </AnimatePresence>
+    </Motion.nav>
   );
 };
 
-export default TotalNavbar;
+export default Navbar;

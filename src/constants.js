@@ -15,6 +15,7 @@ import githubLogo from './assets/skills/githubLogo.png';
 import vscodeLogo from './assets/skills/vscodeLogo.png';
 import postmanLogo from './assets/skills/postmanLogo.png';
 import netlifyLogo from './assets/skills/netlifyLogo.png';
+import verselLogo from './assets/skills/verselLogo.png';
 import cLogo from './assets/skills/cLogo.png';
 
 export const SkillsInfo = [
@@ -53,7 +54,8 @@ export const SkillsInfo = [
     { name:"GitHub", logo: githubLogo },
     { name:"VS Code", logo: vscodeLogo },
     { name:"Postman", logo: postmanLogo },
-    { name:"Netlify", logo: netlifyLogo }
+    { name:"Netlify", logo: netlifyLogo },
+    {name: "Vercel", logo: verselLogo}
     ],
   },
 ];

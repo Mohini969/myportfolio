@@ -1,90 +1,108 @@
-import React, { useEffect, useState } from "react";
-import { FaGraduationCap } from "react-icons/fa";
+import React from "react";
+import { motion as Motion } from "framer-motion";
+import { GraduationCap, MapPin } from "lucide-react";
 
 const Education = () => {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    // Fade-in animation when component mounts
-    const timer = setTimeout(() => setVisible(true), 200);
-    return () => clearTimeout(timer);
-  }, []);
-
   const educationData = [
     {
-      year: "10th (2020)",
-      school: "Sri Aurobindo Institute of Integral Education",
-      location: "Bhubaneswar, Odisha",
-      details: "Scored 88% in the 10th Board Examination.",
-    },
-    {
-      year: "12th (2021-2023)",
-      school: "Viswass Higher Secondary School",
-      location: " Bhubaneswar, Odisha",
-      details: "Completed 12th in Science stream.",
-    },
-    {
-      year: "B.Tech CSE (2023 - 2027)",
+      year: "2023 - 2027",
+      degree: "B.Tech in Computer Science & Engineering",
       school: "GIFT Autonomous College",
       location: "Bhubaneswar, Odisha",
-      details:
-        "Currently a third-year Computer Science and Engineering student at GIFT Autonomous College, maintaining an 8.9 CGPA.",
+      result: "CGPA : 8.88",
+      description:
+        "Currently pursuing B.Tech in Computer Science and Engineering with a strong focus on Full Stack Development, Java, and Backend Technologies.",
+    },
+    {
+      year: "2021 - 2023",
+      degree: "Higher Secondary Education (Science)",
+      school: "Viswass Higher Secondary School",
+      location: "Bhubaneswar, Odisha",
+      result: "80.33%",
+      description:
+        "Completed Higher Secondary Education in the Science stream with Physics, Chemistry and Mathematics.",
+    },
+    {
+      year: "2020",
+      degree: "Secondary Education",
+      school: "Sri Aurobindo Institute of Integral Education",
+      location: "Bhubaneswar, Odisha",
+      result: "88%",
+      description:
+        "Completed Secondary Education with excellent academic performance and developed a strong foundation in Mathematics and Science.",
     },
   ];
 
   return (
-    <section
-      id="education"
-      className={`py-20 px-6 lg:px-20 relative overflow-hidden bg-gradient-to-b from-[#000000] via-[#1b1233] to-[#2b1955] text-white transition-all duration-700 ${
-        visible ? "opacity-100" : "opacity-0"
-      }`}
-    >
-      {/* Background Glows */}
-      <span className="absolute top-[-80px] left-[-80px] w-96 h-96 rounded-full bg-purple-800 opacity-20 blur-3xl animate-pulse"></span>
-      <span className="absolute bottom-[-100px] right-[-100px] w-[30rem] h-[30rem] rounded-full bg-blue-900 opacity-20 blur-3xl animate-pulse"></span>
+    <section id="education" className="section">
+      <div className="relative z-10 max-w-7xl mx-auto">
+        <Motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.55 }}
+          className="mx-auto mb-16 max-w-3xl text-center"
+        >
+          <p className="section-kicker">Academic path</p>
+          <h2 className="mt-3 text-4xl font-extrabold theme-heading sm:text-5xl">
+            My <span className="text-cyan-400">Education</span>
+          </h2>
 
-      {/* Section Title */}
-      <div className="text-center mb-16 relative z-10">
-        <h2 className="text-3xl sm:text-4xl font-bold text-white">EDUCATION</h2>
-        <div className="w-24 h-1 bg-[#8245ec] mx-auto mt-3"></div>
-        <p className="text-gray-300 mt-4 text-lg font-semibold">
-          My academic journey so far
-        </p>
-      </div>
+          <p className="theme-muted mt-5 max-w-2xl mx-auto">
+            My academic journey that built the foundation of my technical career.
+          </p>
+        </Motion.div>
 
-      {/* Timeline */}
-      <div className="relative max-w-4xl mx-auto z-10">
-        {/* Vertical line */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-purple-500 via-blue-500 to-purple-500 h-full rounded-full"></div>
+        <div className="relative mx-auto max-w-5xl">
+          <div className="timeline-line absolute left-5 top-0 hidden h-full w-px md:left-1/2 md:block"></div>
 
-        <div className="space-y-16">
-          {educationData.map((edu, idx) => (
-            <div
-              key={idx}
-              className={`relative flex items-center ${
-                idx % 2 === 0 ? "flex-row-reverse" : "flex-row"
-              }`}
-            >
-              {/* Icon */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 w-10 h-10 bg-[#8245ec] rounded-full flex items-center justify-center shadow-lg">
-                <FaGraduationCap className="text-white" />
-              </div>
-
-              {/* Content */}
-              <div
-                className={`w-5/12 p-6 rounded-xl shadow-xl backdrop-blur-md bg-[#1a1a2e] hover:bg-[#14131f] transform transition duration-500 hover:-translate-y-2 ${
-                  idx % 2 === 0
-                    ? "text-right mr-auto"
-                    : "text-left ml-auto"
+          <div className="space-y-8">
+          {educationData.map((item, index) => (
+            <Motion.article
+              key={index}
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ duration: 0.55, delay: index * 0.06 }}
+                className={`relative grid gap-5 md:grid-cols-2 ${
+                  index % 2 === 0 ? "md:text-right" : "md:text-left"
                 }`}
-              >
-                <h3 className="text-xl font-bold text-blue-400">{edu.year}</h3>
-                <p className="text-lg font-semibold">{edu.school}</p>
-                <p className="text-sm text-gray-400">{edu.location}</p>
-                <p className="text-gray-300 mt-2">{edu.details}</p>
-              </div>
-            </div>
+            >
+                <span className="absolute left-1/2 top-7 hidden h-4 w-4 -translate-x-1/2 rounded-full border-4 border-cyan-400 bg-[var(--color-bg)] md:block" />
+                <div className={`hidden md:block ${index % 2 === 0 ? "md:order-2" : "md:order-1"}`} />
+
+                <Motion.div
+                  whileHover={{ y: -6 }}
+                  className={`glass-card relative p-6 sm:p-7 ${index % 2 === 0 ? "md:order-1" : "md:order-2"}`}
+                >
+                  <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+                    <div className={index % 2 === 0 ? "md:order-2" : ""}>
+                      <div className={`mb-4 flex items-center gap-3 ${index % 2 === 0 ? "md:justify-end" : ""}`}>
+                        <span className="grid h-12 w-12 place-items-center rounded-2xl bg-cyan-400/10 text-cyan-400">
+                          <GraduationCap size={25} />
+                        </span>
+                        <span className="mono rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-sm font-bold text-cyan-400">
+                          {item.year}
+                        </span>
+                      </div>
+                      <h3 className="text-xl font-bold theme-heading sm:text-2xl">{item.degree}</h3>
+                      <p className="mt-2 font-semibold text-cyan-400">{item.school}</p>
+                      <p className={`theme-muted mt-2 flex items-center gap-2 text-sm ${index % 2 === 0 ? "md:justify-end" : ""}`}>
+                        <MapPin size={15} />
+                        {item.location}
+                      </p>
+                    </div>
+                  </div>
+
+                  <span className="mt-5 inline-block rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-sm font-semibold text-emerald-300">
+                    {item.result}
+                  </span>
+
+                  <p className="theme-text mt-5 leading-7">{item.description}</p>
+                </Motion.div>
+              </Motion.article>
           ))}
+          </div>
         </div>
       </div>
     </section>

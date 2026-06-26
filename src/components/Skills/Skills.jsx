@@ -1,59 +1,84 @@
 import React from "react";
+import { motion as Motion } from "framer-motion";
 import { SkillsInfo } from "../../constants";
 
 const Skills = () => {
+  const maxSkillCount = Math.max(...SkillsInfo.map((category) => category.skills.length));
+
   return (
-    <section
-      id="skills"
-      className="py-24 pb-24 px-[12vw] md:px-[7vw] lg:px-[20vw] font-sans
-                 bg-gradient-to-b from-[#1a0d3f] via-[#2e1a55] to-[#000000]
-                 clip-path-cursor relative overflow-hidden"
-    >
-      {/* Background animation circles */}
-      <span className="absolute top-[-50px] left-[-50px] w-72 h-72 rounded-full bg-purple-800 opacity-20 animate-pulse"></span>
-      <span className="absolute bottom-[-60px] right-[-60px] w-96 h-96 rounded-full bg-blue-900 opacity-20 animate-pulse"></span>
+    <section id="skills" className="section">
+      <div className="relative z-10 mx-auto max-w-7xl">
+        <Motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.55 }}
+          className="mx-auto mb-16 max-w-3xl text-center"
+        >
+          <p className="section-kicker">Technical toolkit</p>
+          <h2 className="mt-3 text-4xl font-extrabold theme-heading sm:text-5xl">
+            Skills that support <span className="text-cyan-400">full-stack delivery</span>
+          </h2>
+          <p className="theme-muted mt-5 text-lg">
+            Technologies and tools I use to build modern web applications.
+          </p>
+        </Motion.div>
 
-      {/* Section title */}
-      <div className="text-center mb-8 relative z-10">
-        <h2 className="text-3xl sm:text-4xl font-bold text-white">SKILLS</h2>
-        <div className="w-24 h-1 bg-[#8245ec] mx-auto mt-2"></div>
-        <p className="text-gray-400 mt-4 text-lg font-semibold">
-          A collection of my technical skills and expertise
-        </p>
-      </div>
-
-      {/* Skills categories */}
-      <div className="flex flex-wrap gap-6 justify-center relative z-10">
+        <div className="grid gap-6 md:grid-cols-2">
         {SkillsInfo.map((category) => (
-          <div
+          <Motion.article
             key={category.title}
-            className="bg-gray-900 backdrop-blur-md px-6 sm:px-10 py-8 sm:py-6 mb-10 w-full sm:w-[48%] rounded-2xl border border-white
-                       shadow-[0_0_20px_1px_rgba(130,69,236,0.3)]
-                       transform transition duration-500
-                       hover:-translate-y-2 hover:shadow-2xl hover:bg-[#11101a]"
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.55 }}
+            whileHover={{ y: -8 }}
+            className="glass-card group p-6 sm:p-8"
           >
-            <h3 className="text-2xl font-semibold text-blue-400 mb-6 text-center">
-              {category.title}
-            </h3>
-            <div className="flex flex-wrap justify-center gap-6">
+            <div className="mb-7 flex items-start justify-between gap-5">
+              <div>
+                <h3 className="text-2xl font-bold theme-heading">{category.title}</h3>
+                <p className="theme-muted mt-2 text-sm">
+                  {category.skills.length} technologies in active use
+                </p>
+              </div>
+              <span className="mono rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-sm font-bold text-cyan-400">
+                {category.skills.length} tools
+              </span>
+            </div>
+
+            <div className="mb-7 h-2 overflow-hidden rounded-full bg-cyan-400/10">
+              <Motion.div
+                initial={{ width: 0 }}
+                whileInView={{ width: `${(category.skills.length / maxSkillCount) * 100}%` }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.9, ease: "easeOut" }}
+                className="h-full rounded-full bg-gradient-to-r from-cyan-400 via-emerald-400 to-amber-300"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {category.skills.map((skill) => (
-                <div
+                <Motion.div
                   key={skill.name}
-                  className="flex flex-col items-center w-24"
+                  whileHover={{ scale: 1.04, y: -3 }}
+                  className="theme-tile group/skill flex min-h-[92px] flex-col items-center justify-center rounded-2xl border p-3 text-center transition hover:border-cyan-400"
                 >
-                  <img
-                    src={skill.logo}
-                    alt={skill.name}
-                    className="w-16 h-16 mb-2 object-contain"
-                  />
-                  <p className="text-white font-medium text-center">
-                    {skill.name}
-                  </p>
-                </div>
+                  <div className="grid h-12 w-12 place-items-center rounded-2xl bg-white shadow-sm transition group-hover/skill:shadow-[0_0_18px_rgba(34,211,238,.25)]">
+                    <img
+                      src={skill.logo}
+                      alt={skill.name}
+                      loading="lazy"
+                      className="h-8 w-8 object-contain"
+                    />
+                  </div>
+                  <p className="theme-text mt-3 text-sm font-semibold">{skill.name}</p>
+                </Motion.div>
               ))}
             </div>
-          </div>
+          </Motion.article>
         ))}
+        </div>
       </div>
     </section>
   );

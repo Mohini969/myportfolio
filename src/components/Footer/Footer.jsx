@@ -1,87 +1,97 @@
 import React from "react";
-import { FaGithub, FaLinkedin, FaEnvelope, FaInstagram } from "react-icons/fa";
+import { motion as Motion } from "framer-motion";
+import { ArrowUp } from "lucide-react";
+import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
 
 const Footer = () => {
   const socialLinks = [
     {
       icon: <FaGithub />,
       link: "https://github.com/Mohini969",
-      color: "#6e5494",
     },
     {
       icon: <FaLinkedin />,
       link: "https://www.linkedin.com/in/mohini-sahoo-64924933b",
-      color: "#0077b5",
     },
-  
     {
       icon: <FaInstagram />,
       link: "https://www.instagram.com/khu_si__khusi/",
-      color: "#e74c3c",
     },
   ];
 
   const quickLinks = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
+    { name: "Home", href: "#about" },
+    { name: "Projects", href: "#projects" },
     { name: "Education", href: "#education" },
     { name: "Contact", href: "#contact" },
   ];
 
-  return (
-    <footer className="bg-gradient-to-tr from-[#0f0c29] via-[#302b63] to-[#24243e] text-white py-12 relative overflow-hidden">
-      {/* Decorative Glows (Kept from original) */}
-      <span className="absolute w-60 h-60 rounded-full bg-purple-700 opacity-20 blur-3xl top-[-50px] left-[-50px]"></span>
-      <span className="absolute w-80 h-80 rounded-full bg-blue-600 opacity-20 blur-3xl bottom-[-80px] right-[-60px]"></span>
+  const scrollTop = () => {
+    document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+  };
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start">
-        {/* Logo / Name */}
-        <div className="mb-8 md:mb-0 text-center md:text-left basis-1/3">
-          <h2 className="text-3xl font-bold text-white">Mohini Sahoo</h2>
-          <p className="text-gray-300 mt-2">
+  return (
+    <footer className="relative theme-footer overflow-hidden border-t border-cyan-400/15">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/70 to-transparent"></div>
+
+      <Motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.55 }}
+        className="relative z-10 mx-auto grid max-w-7xl gap-10 px-6 py-12 md:grid-cols-[1fr_auto_1fr] md:items-center lg:px-10"
+      >
+        <div className="text-center md:text-left">
+          <h2 className="text-3xl font-bold theme-heading">
+            Mohini <span className="text-cyan-400">Sahoo</span>
+          </h2>
+
+          <p className="theme-muted mt-3">
             Full Stack Developer | AI/ML Enthusiast
           </p>
         </div>
 
-        {/* Quick Links & Copyright (Combined for proper vertical alignment) */}
-        <div className="mb-8 md:mb-0 text-center basis-1/3">
-          <h3 className="font-semibold mb-4">Quick Links</h3>
-          <div className="flex justify-center space-x-6">
-            {quickLinks.map((link, idx) => (
+        <div className="text-center">
+          <div className="flex flex-wrap justify-center gap-2 theme-text">
+            {quickLinks.map((item, index) => (
               <a
-                key={idx}
-                href={link.href}
-                className="hover:text-purple-400 transition-colors duration-300 text-sm" // Added text-sm to match image size
+                key={index}
+                href={item.href}
+                className="rounded-full px-4 py-2 text-sm font-semibold transition duration-300 hover:bg-cyan-400/10 hover:text-cyan-400"
               >
-                {link.name}
+                {item.name}
               </a>
             ))}
           </div>
-          
-          {/* MOVED & MODIFIED COPYRIGHT SECTION */}
-          <div className="mt-4 text-gray-400 text-sm">
-             &copy; 2025 Mohini Sahoo. All rights reserved.
-          </div>
+
+          <p className="text-slate-500 text-sm mt-6">
+            © 2025 Mohini Sahoo. All Rights Reserved.
+          </p>
         </div>
 
-        {/* Social Icons */}
-        <div className="text-center md:text-right basis-1/3">
-          <h3 className="font-semibold mb-4">Connect with Me</h3>
-          <div className="flex justify-center md:justify-end space-x-6">
-            {socialLinks.map((item, idx) => (
-              <a
-                key={idx}
+        <div className="flex items-center justify-center gap-3 md:justify-end">
+            {socialLinks.map((item, index) => (
+              <Motion.a
+                key={index}
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white text-2xl hover:text-purple-400 transition-colors duration-300"
+                whileHover={{ y: -4, scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                className="w-11 h-11 rounded-2xl theme-tile border flex items-center justify-center text-cyan-400 text-xl transition-all duration-300 hover:border-cyan-400"
               >
                 {item.icon}
-              </a>
+              </Motion.a>
             ))}
-          </div>
+          <button
+            onClick={scrollTop}
+            className="grid h-11 w-11 place-items-center rounded-2xl border border-cyan-400/30 bg-cyan-400/10 text-cyan-400 transition hover:-translate-y-1 hover:border-cyan-400"
+            aria-label="Back to top"
+          >
+            <ArrowUp size={20} />
+          </button>
         </div>
-      </div>
+      </Motion.div>
     </footer>
   );
 };

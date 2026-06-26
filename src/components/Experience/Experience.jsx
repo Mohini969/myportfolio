@@ -50,7 +50,7 @@ const Experience = () => {
   return (
     <section
       id="experience"
-      className={`py-20 bg-gradient-to-b from-[#1a0d3f] to-[#000000] text-white transition-all duration-700 ${
+      className={`py-20 experience-section transition-all duration-700 ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}
     >
@@ -64,12 +64,12 @@ const Experience = () => {
           {experiences.map((exp, idx) => (
             <div
               key={idx}
-              className="bg-[#1a1a2e] rounded-xl p-6 shadow-lg transform transition duration-500 hover:-translate-y-2 hover:shadow-2xl hover:bg-[#2a1a4f]"
+              className="experience-card hover:-translate-y-2 hover:shadow-2xl"
             >
               <h3 className="text-xl font-semibold mb-3 text-blue-400">
                 {exp.title}
               </h3>
-              <p className="text-gray-300">{exp.description}</p>
+              <p className="theme-text">{exp.description}</p>
             </div>
           ))}
         </div>
@@ -82,15 +82,15 @@ const Experience = () => {
           {projects.map((proj, idx) => (
             <div
               key={idx}
-              className="bg-[#1a1a2e] rounded-xl p-6 shadow-lg transform transition duration-500 hover:-translate-y-2 hover:shadow-2xl hover:bg-[#2a1a4f]"
+              className="experience-card hover:-translate-y-2 hover:shadow-2xl"
             >
               <h4 className="text-lg font-semibold mb-2 text-blue-400">
                 {proj.name}
               </h4>
-              <p className="text-gray-400 mb-2">
+              <p className="theme-muted mb-2">
                 <span className="font-semibold">Tech:</span> {proj.tech}
               </p>
-              <p className="text-gray-300">{proj.description}</p>
+              <p className="theme-text">{proj.description}</p>
             </div>
           ))}
         </div>

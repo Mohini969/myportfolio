@@ -1,37 +1,30 @@
-import React from 'react';
-// import profileImg from "../assets/profile.jpg";
 
-import Navbar from './components/Navbar/Navbar';
-import About from './components/About/About';
-import Skills from './components/Skills/Skills';
-import Contact from './components/Contact/Contact';
-import Education from './components/Education/Education';
-import Experience from './components/Experience/Experience';
-import Work from './components/Work/Work';
-import Footer from './components/Footer/Footer';   
-import BlurBlob from './BlurBlob'; 
+import Navbar from "./components/Navbar/Navbar";
+import Hero from "./components/Hero/Hero";
+import Skills from "./components/Skills/Skills";
+import Education from "./components/Education/Education";
+import Work from "./components/Work/Work";
+import Projects from "./components/Projects/Projects";
+import Contact from "./components/Contact/Contact";
+import Footer from "./components/Footer/Footer";
 
-
-
-
-function App() {  
+function App() {
   return (
-    <div className='bg-[#050414] min-h-screen text-white'>
-      <BlurBlob position={{top:'35%', left:'20%'}} size={{width:"30%", height:"40%"}}></BlurBlob>
-    <div className='absolute inset-0 bg-[linear-gradient(to-right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to-bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%)]'>
-  </div>
-    <div className='realative pt-20'>
+    <div className="app-shell">
+      <div className="ambient-field"></div>
+      <div className="absolute inset-0 app-grid"></div>
+      <div className="noise-layer"></div>
       <Navbar />
-      <About />
-      <Skills />
-      <Contact />
-      <Education />
-      <Experience />
-      <Work />
-      <Footer />    
-    </div>
+      <main className="relative z-10">
+        <Hero />
+        <Skills />
+        <Projects />
+        <Education />
+        <Work />
+        <Contact />
+      </main>
+      <Footer />
     </div>
   );
 }
-
 export default App;
